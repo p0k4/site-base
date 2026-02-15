@@ -1,0 +1,62 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: app-db
+    env_file:
+      - ./.env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+
+  api:
+    build:
+      context: ../apps/api
+      dockerfile: Dockerfile
+    container_name: app-api
+    env_file:
+      - ./.env
+    environment:
+      PORT: 4000
+      DB_HOST: db
+      DB_PORT: 5432
+    ports:
+      - "4000:4000"
+    volumes:
+      - ${UPLOADS_HOST_PATH:-./uploads}:/app/uploads
+    networks:
+      default:
+      n8n_default:
+        aliases:
+          - app-api
+    depends_on:
+      - db
+
+  web:
+    build:
+      context: ..
+      dockerfile: apps/web/Dockerfile
+    container_name: app-web
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:4000/api}
+    ports:
+      - "5173:5173"
+    networks:
+      default:
+      n8n_default:
+        aliases:
+          - app-web
+    depends_on:
+      - api
+
+volumes:
+  db_data:
+
+networks:
+  n8n_default:
+    external: true

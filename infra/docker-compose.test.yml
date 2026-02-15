@@ -1,0 +1,23 @@
+services:
+  db_test:
+    image: postgres:16-alpine
+    container_name: app_test_db
+    env_file:
+      - ../apps/api/.env.test
+    environment:
+      POSTGRES_DB: ${DB_NAME:-app_test}
+      POSTGRES_USER: ${DB_USER:-app_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-app_password}
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_test_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-app_user} -d ${DB_NAME:-app_test}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_test_data:

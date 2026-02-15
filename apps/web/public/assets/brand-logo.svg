@@ -1,0 +1,6 @@
+<svg width="280" height="90" viewBox="0 0 280 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="2" y="2" width="86" height="86" rx="18" fill="#F5F5F5" stroke="#2B2B2B" stroke-width="3" />
+  <path d="M25 62C25 46.6 37.6 34 53 34C68.4 34 81 46.6 81 62" stroke="#2B2B2B" stroke-width="6" stroke-linecap="round" />
+  <circle cx="53" cy="34" r="10" fill="#2B2B2B" />
+  <text x="105" y="56" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#2B2B2B">BRAND</text>
+</svg>
