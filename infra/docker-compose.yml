@@ -1,7 +1,8 @@
+name: site-base-dev
+
 services:
   db:
     image: postgres:16-alpine
-    container_name: app-db
     env_file:
       - ../apps/api/.env
     environment:
@@ -9,16 +10,15 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - sitebase_db_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
 
   api:
     build:
       context: ../apps/api
       dockerfile: Dockerfile
-    container_name: app-api
     env_file:
       - ../apps/api/.env
     environment:
@@ -35,7 +35,6 @@ services:
     build:
       context: ..
       dockerfile: apps/web/Dockerfile
-    container_name: app-web
     environment:
       VITE_API_URL: ${VITE_API_URL:-http://localhost:4000/api}
       CHOKIDAR_USEPOLLING: "true"
@@ -49,4 +48,4 @@ services:
       - api
 
 volumes:
-  db_data:
+  sitebase_db_data:
