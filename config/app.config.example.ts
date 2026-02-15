@@ -5,7 +5,7 @@ export const appConfig = {
   BRAND_LOGO_PATH: "/assets/brand-logo.svg",
   BRAND_FAVICON_PATH: "/assets/brand-favicon.svg",
   DOMAIN: "example.com",
-  CORS_ORIGIN: "http://localhost:5173",
+  CORS_ORIGIN: "http://localhost:5174",
   TEXTS: {
     HERO_TITLE: "O teu próximo carro servido no ponto.",
     HERO_SUBTITLE: "Uma nova forma de comprar carro, com acompanhamento e serviços completos.",

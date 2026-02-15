@@ -53,7 +53,7 @@ Se quiseres trocar os assets, mantém os caminhos definidos em `app.config.ts`.
 cd infra
 docker compose up --build
 ```
-A API fica em `http://localhost:4000` e o frontend em `http://localhost:5173`.
+A API fica em `http://localhost:4000` e o frontend em `http://localhost:5174`.
 
 ### 2) Frontend
 ```bash
@@ -61,7 +61,7 @@ cd apps/web
 npm install
 npm run dev
 ```
-A web app fica em `http://localhost:5173`.
+A web app fica em `http://localhost:5174`.
 
 ### 3) API local (sem Docker)
 ```bash

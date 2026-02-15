@@ -29,7 +29,7 @@ async def run_test():
         page = await context.new_page()
 
         # Navigate to your target URL and wait until the network request is committed
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
 
         # Wait for the main page to reach DOMContentLoaded state (optional for stability)
         try:
@@ -45,8 +45,8 @@ async def run_test():
                 pass
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:5173
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        # -> Navigate to http://localhost:5174
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
         
         # -> Open the login/register form by clicking the 'Entrar' button so a new user can be registered or an existing user can log in.
         frame = context.pages[-1]
@@ -70,8 +70,8 @@ async def run_test():
         elem = frame.locator('xpath=html/body/div[1]/div/div/div/main/div/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
-        # -> Reload/navigate to the base page (http://localhost:5173) to restore interactive elements, then re-open the login/register form and retry authentication or register a new user if needed.
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        # -> Reload/navigate to the base page (http://localhost:5174) to restore interactive elements, then re-open the login/register form and retry authentication or register a new user if needed.
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
         
         # -> Click the 'Entrar' button to open the login form so credentials can be submitted.
         frame = context.pages[-1]

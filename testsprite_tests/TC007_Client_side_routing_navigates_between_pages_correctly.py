@@ -29,7 +29,7 @@ async def run_test():
         page = await context.new_page()
 
         # Navigate to your target URL and wait until the network request is committed
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
 
         # Wait for the main page to reach DOMContentLoaded state (optional for stability)
         try:
@@ -45,8 +45,8 @@ async def run_test():
                 pass
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:5173
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        # -> Navigate to http://localhost:5174
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
         
         # -> From Home/Listings page, click the 'Serviços' link (element index 48) to navigate to the Services page using client-side routing.
         frame = context.pages[-1]

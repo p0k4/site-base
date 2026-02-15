@@ -29,7 +29,7 @@ async def run_test():
         page = await context.new_page()
 
         # Navigate to your target URL and wait until the network request is committed
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
 
         # Wait for the main page to reach DOMContentLoaded state (optional for stability)
         try:
@@ -45,11 +45,11 @@ async def run_test():
                 pass
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:5173
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        # -> Navigate to http://localhost:5174
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
         
         # -> Check the API health endpoint(s) to determine whether the backend is running and responding. If unavailable, try common API ports/paths. After API check, verify database readiness (e.g., via API health response or a DB port check).
-        await page.goto("http://localhost:5173/api/health", wait_until="commit", timeout=10000)
+        await page.goto("http://localhost:5174/api/health", wait_until="commit", timeout=10000)
         
         # -> Extract the current /api/health page content to determine any health JSON or status text. Then open a new tab to check a common backend health endpoint (http://localhost:8000/health) to look for API response. If that is unreachable, attempt other common API ports later.
         await page.goto("http://localhost:8000/health", wait_until="commit", timeout=10000)
@@ -78,7 +78,7 @@ async def run_test():
         elem = frame.locator('xpath=html/body/div[1]/div[1]/div[2]/div/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
-        # -> Retry the 5000 health page reload (final allowed reload attempt for that endpoint), then check the remaining common backend port (http://localhost:8080/health) in a new tab, and open the frontend base URL (http://localhost:5173) in a new tab to re-evaluate frontend status. If backend endpoints remain unreachable or return 403/ERR_EMPTY_RESPONSE, report that docker-compose must be run locally and request permission or instructions to run docker-compose up (or provide logs).
+        # -> Retry the 5000 health page reload (final allowed reload attempt for that endpoint), then check the remaining common backend port (http://localhost:8080/health) in a new tab, and open the frontend base URL (http://localhost:5174) in a new tab to re-evaluate frontend status. If backend endpoints remain unreachable or return 403/ERR_EMPTY_RESPONSE, report that docker-compose must be run locally and request permission or instructions to run docker-compose up (or provide logs).
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=html/body/div[1]/div[1]/div[2]/div/button').nth(0)
@@ -86,7 +86,7 @@ async def run_test():
         
         await page.goto("http://localhost:8080/health", wait_until="commit", timeout=10000)
         
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
         
         # -> Click the Reload button on the current tab to re-attempt loading http://localhost:8080/health (one reload attempt for this endpoint). If it still fails, report that docker-compose must be run locally and request permission or instructions to run docker-compose up and to provide logs.
         frame = context.pages[-1]

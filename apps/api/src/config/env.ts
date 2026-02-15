@@ -36,7 +36,7 @@ export const env = {
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || "dev_refresh_secret",
   jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "15m",
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "30d",
-  corsOrigin: parseCorsOrigins(process.env.CORS_ORIGIN, "http://localhost:5173"),
+  corsOrigin: parseCorsOrigins(process.env.CORS_ORIGIN, "http://localhost:5174"),
   uploadDir: process.env.UPLOAD_DIR || "uploads",
   uploadMaxFileSizeMb: Number(process.env.UPLOAD_MAX_FILE_SIZE_MB || 5),
   uploadMaxFiles: Number(process.env.UPLOAD_MAX_FILES || 12)

@@ -29,7 +29,7 @@ async def run_test():
         page = await context.new_page()
 
         # Navigate to your target URL and wait until the network request is committed
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
 
         # Wait for the main page to reach DOMContentLoaded state (optional for stability)
         try:
@@ -45,11 +45,11 @@ async def run_test():
                 pass
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:5173
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        # -> Navigate to http://localhost:5174
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
         
         # -> Wait for the SPA to finish loading and reveal interactive elements. If still blank, reload the page and then locate Login or Create Listing navigation.
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
         
         # -> Open the login page by clicking the 'Entrar' button so a user can sign in or register (element index 195).
         frame = context.pages[-1]
@@ -135,8 +135,8 @@ async def run_test():
         elem = frame.locator('xpath=html/body/div[1]/div/div/div/main/div/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
-        # -> Reload the SPA by navigating to http://localhost:5173 to restore interactive UI, then retry signing in with the registered credentials.
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        # -> Reload the SPA by navigating to http://localhost:5174 to restore interactive UI, then retry signing in with the registered credentials.
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
         
         # -> Open the login form by clicking the 'Entrar' button so the test user can sign in (then fill credentials and submit on the next step).
         frame = context.pages[-1]

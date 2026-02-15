@@ -23,6 +23,7 @@ services:
       - ../apps/api/.env
     environment:
       DB_HOST: db
+      DB_PORT: 5432
     ports:
       - "4000:4000"
     volumes:
@@ -39,7 +40,7 @@ services:
       VITE_API_URL: ${VITE_API_URL:-http://localhost:4000/api}
       CHOKIDAR_USEPOLLING: "true"
     ports:
-      - "5174:5173"
+      - "5174:5174"
     volumes:
       - ../apps/web:/workspace/apps/web
       - ../config:/workspace/config

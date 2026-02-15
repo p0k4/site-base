@@ -29,7 +29,7 @@ async def run_test():
         page = await context.new_page()
 
         # Navigate to your target URL and wait until the network request is committed
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
 
         # Wait for the main page to reach DOMContentLoaded state (optional for stability)
         try:
@@ -45,8 +45,8 @@ async def run_test():
                 pass
 
         # Interact with the page elements to simulate user flow
-        # -> Navigate to http://localhost:5173
-        await page.goto("http://localhost:5173", wait_until="commit", timeout=10000)
+        # -> Navigate to http://localhost:5174
+        await page.goto("http://localhost:5174", wait_until="commit", timeout=10000)
         
         # -> Open the login/register view by clicking the 'Entrar' (Login) link so the registration option can be accessed.
         frame = context.pages[-1]
@@ -109,8 +109,8 @@ async def run_test():
         elem = frame.locator('xpath=html/body/div[1]/div/div/div/main/div/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
-        # -> Reload the registration page (http://localhost:5173/registar) to restore the form so fields can be re-verified/filled and the registration can be re-submitted.
-        await page.goto("http://localhost:5173/registar", wait_until="commit", timeout=10000)
+        # -> Reload the registration page (http://localhost:5174/registar) to restore the form so fields can be re-verified/filled and the registration can be re-submitted.
+        await page.goto("http://localhost:5174/registar", wait_until="commit", timeout=10000)
         
         # -> Fill the registration form fields (name, email, phone, location, password) and click the visible 'Criar conta' button (index=471) to submit. Then observe the resulting page for registration success or validation errors.
         frame = context.pages[-1]
