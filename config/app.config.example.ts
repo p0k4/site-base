@@ -20,7 +20,12 @@ export const appConfig = {
     LOCATION: "Cidade, País",
     EMAIL: "contacto@exemplo.pt",
     PHONE: "+351 000 000 000"
-  }
+  },
+  // Optional: Analytics (google | plausible | none)
+  ANALYTICS_PROVIDER: "none" as "google" | "plausible" | "none",
+  ANALYTICS_ID: "", // Google Measurement ID or Plausible domain
+  // Optional: Error Monitoring
+  SENTRY_DSN: "" // Leave empty to disable
 } as const;
 
 export type AppConfig = typeof appConfig;

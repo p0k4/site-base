@@ -357,6 +357,161 @@ npm test
 npm test -- --coverage
 ```
 
+## 🎨 Linting e Formatação
+
+O projeto usa **ESLint** e **Prettier** para garantir qualidade e consistência de código.
+
+### Executar Lint
+
+```bash
+# Lint em todo o projeto
+npm run lint
+
+# Lint apenas API
+npm run lint:api
+
+# Lint apenas Web
+npm run lint:web
+
+# Fix automático
+cd apps/api && npm run lint:fix
+cd apps/web && npm run lint:fix
+```
+
+### Formatação
+
+```bash
+# Formatar todo o código
+npm run format
+
+# Formatar apenas API
+npm run format:api
+
+# Formatar apenas Web
+npm run format:web
+
+# Verificar formatação sem alterar
+cd apps/api && npm run format:check
+```
+
+### Configuração
+
+- **ESLint**: `.eslintrc.json` em `apps/api` e `apps/web`
+- **Prettier**: `.prettierrc.json` na raiz
+- **EditorConfig**: `.editorconfig` para consistência entre IDEs
+
+## 🧪 Testes E2E (Playwright)
+
+Testes end-to-end com Playwright para validar fluxos completos.
+
+### Executar Testes
+
+```bash
+# Executar todos os testes E2E
+npm run test:e2e
+
+# Modo UI (interativo)
+npm run test:e2e:ui
+
+# Com browser visível
+npm run test:e2e:headed
+```
+
+### Testes Disponíveis
+
+- **health.spec.ts** - Health check da API e carregamento do frontend
+- **auth.spec.ts** - Login, register, validações
+- **listings.spec.ts** - Browse, filtros, detalhes de anúncios
+
+### Configuração
+
+Edita `playwright.config.ts` para ajustar:
+- Browsers a testar (chromium, firefox, webkit)
+- Base URL
+- Screenshots e vídeos
+- Retries
+
+## 📚 Storybook
+
+Documentação visual e interativa dos componentes React.
+
+### Executar Storybook
+
+```bash
+# Iniciar Storybook
+npm run storybook
+
+# Acede a http://localhost:6006
+```
+
+### Build Storybook
+
+```bash
+cd apps/web
+npm run build-storybook
+```
+
+### Stories Disponíveis
+
+- **ListingCard** - Card de anúncio com variações
+- **Toast** - Notificações de sucesso/erro
+- _(Adiciona mais stories em `src/components/*.stories.tsx`)_
+
+## 📊 Monitoring (Opcional)
+
+### Sentry
+
+Integração com Sentry para error tracking e performance monitoring.
+
+**Setup:**
+1. Cria conta em [sentry.io](https://sentry.io)
+2. Adiciona DSN em `config/app.config.ts`:
+
+```typescript
+SENTRY_DSN: "https://your-dsn@sentry.io/project-id"
+```
+
+3. Instala dependências:
+
+```bash
+cd apps/api && npm install @sentry/node
+cd apps/web && npm install @sentry/react
+```
+
+📖 **Documentação completa**: [docs/SENTRY.md](./docs/SENTRY.md)
+
+## 📈 Analytics (Opcional)
+
+Suporte para Google Analytics e Plausible.
+
+**Setup em `config/app.config.ts`:**
+
+```typescript
+// Google Analytics
+ANALYTICS_PROVIDER: "google",
+ANALYTICS_ID: "G-XXXXXXXXXX",
+
+// OU Plausible
+ANALYTICS_PROVIDER: "plausible",
+ANALYTICS_ID: "yourdomain.com",
+
+// OU Desativado
+ANALYTICS_PROVIDER: "none",
+```
+
+**Tracking de eventos:**
+
+```typescript
+import { analytics } from '@/lib/analytics';
+
+analytics.trackEvent({
+  name: 'button_click',
+  properties: { button_name: 'signup' }
+});
+```
+
+📖 **Documentação completa**: [docs/ANALYTICS.md](./docs/ANALYTICS.md)
+
 ## 📄 Licença
 
 MIT

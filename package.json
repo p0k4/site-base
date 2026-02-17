@@ -14,11 +14,19 @@
     "dev:web": "cd apps/web && npm run dev",
     "build:api": "cd apps/api && npm run build",
     "build:web": "cd apps/web && npm run build",
-    "lint:api": "cd apps/api && npm run lint || echo 'No lint script configured'",
-    "lint:web": "cd apps/web && npm run lint || echo 'No lint script configured'",
+    "lint": "npm run lint:api && npm run lint:web",
+    "lint:api": "cd apps/api && npm run lint",
+    "lint:web": "cd apps/web && npm run lint",
+    "format": "npm run format:api && npm run format:web",
+    "format:api": "cd apps/api && npm run format",
+    "format:web": "cd apps/web && npm run format",
     "type-check:api": "cd apps/api && npx tsc --noEmit",
     "type-check:web": "cd apps/web && npx tsc --noEmit",
     "test:api": "cd apps/api && npm test",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "storybook": "cd apps/web && npm run storybook",
     "install:all": "npm install && npm install --workspace=apps/api && npm install --workspace=apps/web"
   },
   "engines": {
@@ -40,5 +48,8 @@
     "multi-tenant"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.42.0"
+  }
 }
