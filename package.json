@@ -8,7 +8,7 @@
     "apps/web"
   ],
   "scripts": {
-    "setup": "bash setup.sh",
+    "setup": "bash scripts/setup.sh",
     "dev": "cd infra && docker compose up --build",
     "dev:api": "cd apps/api && npm run dev",
     "dev:web": "cd apps/web && npm run dev",

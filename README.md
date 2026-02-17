@@ -51,11 +51,16 @@ site-base/
 │   ├── docker-compose-prod.yml  # Stack de produção
 │   ├── init-db.sql              # Schema inicial
 │   └── migrations/              # Migrações SQL
+├── scripts/
+│   ├── setup.sh                 # Setup automático do projeto
+│   ├── ops/
+│   │   └── deploy.sh            # Deploy produção na VPS
+│   └── db/
+│       └── backup-bd.sh         # Script auxiliar de backups
 ├── .github/
 │   └── workflows/
 │       └── ci.yml        # CI/CD automático
 ├── package.json          # Scripts de gestão
-├── setup.sh              # Script de setup automático
 └── README.md
 ```
 
@@ -301,7 +306,7 @@ docker compose -f docker-compose-prod.yml up -d
 
 ### Deploy Automatizado na VPS (`deploy.sh`)
 
-Foi adicionado o script `infra/migrations/deploy.sh` para facilitar deploy manual via Bash na VPS.
+Foi adicionado o script `scripts/ops/deploy.sh` para facilitar deploy manual via Bash na VPS.
 
 **Pré-requisitos**:
 - Docker e Docker Compose instalados na VPS
@@ -312,17 +317,17 @@ Foi adicionado o script `infra/migrations/deploy.sh` para facilitar deploy manua
 
 ```bash
 # Na VPS
-cd /caminho/do/projeto/infra
-chmod +x migrations/deploy.sh
-./migrations/deploy.sh
+cd /caminho/do/projeto
+chmod +x scripts/ops/deploy.sh
+./scripts/ops/deploy.sh
 ```
 
 **O script faz**:
 1. Mostra `pwd` e `git status`
 2. Executa `git pull`
 3. Mostra o último commit aplicado
-4. Executa `docker compose -f docker-compose-prod.yml down`
-5. Executa `docker compose -f docker-compose-prod.yml up -d --build`
+4. Executa `docker compose -f infra/docker-compose-prod.yml down`
+5. Executa `docker compose -f infra/docker-compose-prod.yml up -d --build`
 
 ## 🐛 Troubleshooting
 
