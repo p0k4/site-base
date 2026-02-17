@@ -553,4 +553,4 @@ MIT
 
 ---
 
-**Desenvolvido com ❤️ para ser reutilizável e escalável**
+**Desenvolvido para ser reutilizável e escalável**
