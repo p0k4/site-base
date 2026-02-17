@@ -277,7 +277,7 @@ Antes de entregar ao cliente:
 - [ ] Health check funciona
 - [ ] README atualizado
 - [ ] Repositório git configurado
-- [ ] CI/CD a funcionar (se aplicável)
+- [ ] Deploy manual validado com `scripts/ops/deploy.sh`
 - [ ] Deploy de staging testado
 - [ ] Documentação específica do cliente criada
 

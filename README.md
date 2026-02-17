@@ -18,7 +18,7 @@ O branding (nome, cores, logo, favicon e textos de marca) é configurável num f
 - **Autenticação**: JWT (access + refresh tokens) + bcrypt
 - **Validação**: Zod
 - **Infraestrutura**: Docker Compose
-- **CI/CD**: GitHub Actions
+- **Deploy**: Script manual `scripts/ops/deploy.sh`
 
 ## 📁 Estrutura do Projeto
 
@@ -57,9 +57,6 @@ site-base/
 │   │   └── deploy.sh            # Deploy produção na VPS
 │   └── db/
 │       └── backup-bd.sh         # Script auxiliar de backups
-├── .github/
-│   └── workflows/
-│       └── ci.yml        # CI/CD automático
 ├── package.json          # Scripts de gestão
 └── README.md
 ```
