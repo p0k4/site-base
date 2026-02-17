@@ -234,12 +234,6 @@ Migrations estão em `infra/migrations/`. Para aplicar:
 psql -U app_user -d app_db -f infra/migrations/nome_da_migration.sql
 ```
 
-Se já tiveres uma base existente com a tabela antiga `car_listings`, aplica também:
-
-```bash
-psql -U app_user -d app_db -f infra/migrations/20260217_rename_car_listings_to_listings.sql
-```
-
 ### Criar Primeiro Admin
 
 ```sql
