@@ -299,6 +299,31 @@ cd infra
 docker compose -f docker-compose-prod.yml up -d
 ```
 
+### Deploy Automatizado na VPS (`deploy.sh`)
+
+Foi adicionado o script `infra/migrations/deploy.sh` para facilitar deploy manual via Bash na VPS.
+
+**Pré-requisitos**:
+- Docker e Docker Compose instalados na VPS
+- Repositório já clonado na VPS
+- Acesso ao remoto Git configurado no servidor (SSH key ou credenciais)
+
+**Como usar**:
+
+```bash
+# Na VPS
+cd /caminho/do/projeto/infra
+chmod +x migrations/deploy.sh
+./migrations/deploy.sh
+```
+
+**O script faz**:
+1. Mostra `pwd` e `git status`
+2. Executa `git pull`
+3. Mostra o último commit aplicado
+4. Executa `docker compose -f docker-compose-prod.yml down`
+5. Executa `docker compose -f docker-compose-prod.yml up -d --build`
+
 ## 🐛 Troubleshooting
 
 ### Problema: "Cannot connect to database"
