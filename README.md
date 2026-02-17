@@ -213,7 +213,7 @@ Usa sempre os ficheiros `.example` como template.
 ### Schema Principal
 
 - **users** - Utilizadores (com roles: user, admin)
-- **car_listings** - Anúncios de veículos
+- **listings** - Anúncios (tabela padrão)
 - **listing_images** - Imagens dos anúncios
 - **services** - Serviços disponíveis
 - **leads_contacts** - Leads/contactos
@@ -227,6 +227,12 @@ Migrations estão em `infra/migrations/`. Para aplicar:
 ```bash
 # Dentro do container da DB ou com psql local
 psql -U app_user -d app_db -f infra/migrations/nome_da_migration.sql
+```
+
+Se já tiveres uma base existente com a tabela antiga `car_listings`, aplica também:
+
+```bash
+psql -U app_user -d app_db -f infra/migrations/20260217_rename_car_listings_to_listings.sql
 ```
 
 ### Criar Primeiro Admin

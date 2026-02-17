@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS car_listings (
+CREATE TABLE IF NOT EXISTS listings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS car_listings (
 
 CREATE TABLE IF NOT EXISTS listing_images (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  listing_id UUID NOT NULL REFERENCES car_listings(id) ON DELETE CASCADE,
+  listing_id UUID NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
   url TEXT NOT NULL,
   sort_order INT NOT NULL DEFAULT 0,
   created_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS services (
 CREATE TABLE IF NOT EXISTS leads_contacts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES users(id) ON DELETE SET NULL,
-  listing_id UUID REFERENCES car_listings(id) ON DELETE SET NULL,
+  listing_id UUID REFERENCES listings(id) ON DELETE SET NULL,
   service_id UUID REFERENCES services(id) ON DELETE SET NULL,
   name TEXT NOT NULL,
   email TEXT NOT NULL,
@@ -103,15 +103,15 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
   created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_listings_approved ON car_listings(is_approved);
-CREATE INDEX IF NOT EXISTS idx_listings_status ON car_listings(status);
-CREATE INDEX IF NOT EXISTS idx_listings_featured ON car_listings(is_featured) WHERE is_featured = true;
-CREATE INDEX IF NOT EXISTS idx_listings_brand ON car_listings(brand);
-CREATE INDEX IF NOT EXISTS idx_listings_model ON car_listings(model);
-CREATE INDEX IF NOT EXISTS idx_listings_year ON car_listings(year);
-CREATE INDEX IF NOT EXISTS idx_listings_price ON car_listings(price);
-CREATE INDEX IF NOT EXISTS idx_listings_location ON car_listings(location);
-CREATE INDEX IF NOT EXISTS idx_listings_external_url ON car_listings(external_url);
+CREATE INDEX IF NOT EXISTS idx_listings_approved ON listings(is_approved);
+CREATE INDEX IF NOT EXISTS idx_listings_status ON listings(status);
+CREATE INDEX IF NOT EXISTS idx_listings_featured ON listings(is_featured) WHERE is_featured = true;
+CREATE INDEX IF NOT EXISTS idx_listings_brand ON listings(brand);
+CREATE INDEX IF NOT EXISTS idx_listings_model ON listings(model);
+CREATE INDEX IF NOT EXISTS idx_listings_year ON listings(year);
+CREATE INDEX IF NOT EXISTS idx_listings_price ON listings(price);
+CREATE INDEX IF NOT EXISTS idx_listings_location ON listings(location);
+CREATE INDEX IF NOT EXISTS idx_listings_external_url ON listings(external_url);
 CREATE INDEX IF NOT EXISTS idx_images_listing ON listing_images(listing_id);
 CREATE INDEX IF NOT EXISTS idx_services_active ON services(is_active);
 CREATE INDEX IF NOT EXISTS idx_leads_listing ON leads_contacts(listing_id);

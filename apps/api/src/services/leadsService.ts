@@ -91,7 +91,7 @@ export const listPurchaseLeads = async () => {
       leads.message,
       leads.created_at
     FROM leads_contacts AS leads
-    LEFT JOIN car_listings AS listings ON listings.id = leads.listing_id
+    LEFT JOIN listings ON listings.id = leads.listing_id
     LEFT JOIN LATERAL (
       SELECT listing_images.url
       FROM listing_images

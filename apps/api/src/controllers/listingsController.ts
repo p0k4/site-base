@@ -301,7 +301,7 @@ export const updateFeatured = async (req: AuthedRequest, res: Response) => {
   try {
     await client.query("BEGIN");
     const listingResult = await client.query(
-      "SELECT id, is_approved, is_featured FROM car_listings WHERE id = $1 AND deleted_at IS NULL FOR UPDATE",
+      "SELECT id, is_approved, is_featured FROM listings WHERE id = $1 AND deleted_at IS NULL FOR UPDATE",
       [req.params.id]
     );
     const listing = listingResult.rows[0];
@@ -317,7 +317,7 @@ export const updateFeatured = async (req: AuthedRequest, res: Response) => {
 
     if (requested && !listing.is_featured) {
       const featuredResult = await client.query(
-        "SELECT id FROM car_listings WHERE is_featured = true AND deleted_at IS NULL AND is_approved = true FOR UPDATE"
+        "SELECT id FROM listings WHERE is_featured = true AND deleted_at IS NULL AND is_approved = true FOR UPDATE"
       );
       if (featuredResult.rowCount >= 3) {
         await client.query("ROLLBACK");
@@ -326,7 +326,7 @@ export const updateFeatured = async (req: AuthedRequest, res: Response) => {
     }
 
     const updated = await client.query(
-      "UPDATE car_listings SET is_featured = $2, updated_at = NOW() WHERE id = $1 RETURNING *",
+      "UPDATE listings SET is_featured = $2, updated_at = NOW() WHERE id = $1 RETURNING *",
       [listing.id, requested]
     );
 

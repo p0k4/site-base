@@ -54,7 +54,7 @@ export const createListing = async (data: {
 }) => {
   const result = await db.query<ListingRecord>(
     `
-    INSERT INTO car_listings
+    INSERT INTO listings
       (user_id, title, brand, model, year, price, fuel_type, transmission, mileage, location, description, status, source_type, source_name, external_url, external_ref)
     VALUES
       ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
@@ -101,7 +101,7 @@ export const updateListing = async (id: string, userId: string, fields: Partial<
 }>) => {
   const result = await db.query<ListingRecord>(
     `
-    UPDATE car_listings
+    UPDATE listings
     SET title = COALESCE($3, title),
         brand = COALESCE($4, brand),
         model = COALESCE($5, model),
@@ -147,7 +147,7 @@ export const updateListing = async (id: string, userId: string, fields: Partial<
 export const setListingStatus = async (id: string, userId: string, status: string) => {
   const result = await db.query<ListingRecord>(
     `
-    UPDATE car_listings
+    UPDATE listings
     SET status = $3, updated_at = NOW()
     WHERE id = $1 AND user_id = $2 AND deleted_at IS NULL
     RETURNING *
@@ -160,7 +160,7 @@ export const setListingStatus = async (id: string, userId: string, status: strin
 export const setListingStatusAdmin = async (id: string, status: string) => {
   const result = await db.query<ListingRecord>(
     `
-    UPDATE car_listings
+    UPDATE listings
     SET status = $2, updated_at = NOW()
     WHERE id = $1 AND deleted_at IS NULL
     RETURNING *
@@ -173,7 +173,7 @@ export const setListingStatusAdmin = async (id: string, status: string) => {
 export const softDeleteListing = async (id: string, userId: string) => {
   const result = await db.query<ListingRecord>(
     `
-    UPDATE car_listings
+    UPDATE listings
     SET deleted_at = NOW(), updated_at = NOW()
     WHERE id = $1 AND user_id = $2 AND deleted_at IS NULL
     RETURNING *
@@ -196,7 +196,7 @@ export const getListingById = async (id: string, options?: { includeUnapproved?:
   }
 
   const result = await db.query<ListingRecord>(
-    `SELECT * FROM car_listings WHERE ${conditions.join(" AND ")}`,
+    `SELECT * FROM listings WHERE ${conditions.join(" AND ")}`,
     params
   );
   return result.rows[0];
@@ -204,7 +204,7 @@ export const getListingById = async (id: string, options?: { includeUnapproved?:
 
 export const listListingsByUser = async (userId: string) => {
   const result = await db.query<ListingRecord>(
-    `SELECT * FROM car_listings WHERE user_id = $1 AND deleted_at IS NULL ORDER BY created_at DESC`,
+    `SELECT * FROM listings WHERE user_id = $1 AND deleted_at IS NULL ORDER BY created_at DESC`,
     [userId]
   );
   return result.rows;
@@ -212,7 +212,7 @@ export const listListingsByUser = async (userId: string) => {
 
 export const getListingOwnedByUser = async (id: string, userId: string) => {
   const result = await db.query<ListingRecord>(
-    `SELECT * FROM car_listings WHERE id = $1 AND user_id = $2 AND deleted_at IS NULL`,
+    `SELECT * FROM listings WHERE id = $1 AND user_id = $2 AND deleted_at IS NULL`,
     [id, userId]
   );
   return result.rows[0];
@@ -220,14 +220,14 @@ export const getListingOwnedByUser = async (id: string, userId: string) => {
 
 export const listAdminListings = async () => {
   const result = await db.query<ListingRecord>(
-    `SELECT * FROM car_listings WHERE deleted_at IS NULL ORDER BY created_at DESC`
+    `SELECT * FROM listings WHERE deleted_at IS NULL ORDER BY created_at DESC`
   );
   return result.rows;
 };
 
 export const approveListing = async (id: string, approved: boolean) => {
   const result = await db.query<ListingRecord>(
-    `UPDATE car_listings SET is_approved = $2, updated_at = NOW() WHERE id = $1 RETURNING *`,
+    `UPDATE listings SET is_approved = $2, updated_at = NOW() WHERE id = $1 RETURNING *`,
     [id, approved]
   );
   return result.rows[0];
@@ -275,15 +275,15 @@ export const listPublicListings = async (filters: {
   const result = await db.query<ListingRecord>(
     `
     SELECT
-      car_listings.*,
+      listings.*,
       (
         SELECT url
         FROM listing_images
-        WHERE listing_id = car_listings.id
+        WHERE listing_id = listings.id
         ORDER BY sort_order ASC
         LIMIT 1
       ) AS cover_image_url
-    FROM car_listings
+    FROM listings
     WHERE ${conditions.join(" AND ")}
     ORDER BY created_at DESC
     LIMIT $${values.length - 1} OFFSET $${values.length}
