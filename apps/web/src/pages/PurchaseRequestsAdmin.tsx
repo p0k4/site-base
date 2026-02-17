@@ -9,8 +9,8 @@ type PurchaseRequest = {
   id: string;
   listingId: string | null;
   listingTitle: string | null;
-  listingBrand: string | null;
-  listingModel: string | null;
+  listingCategory: string | null;
+  listingCondition: string | null;
   listingCoverUrl: string | null;
   name: string;
   email: string;
@@ -97,8 +97,8 @@ const saveStoredStatusMap = (map: Record<string, PurchaseRequestStatus>) => {
 const normalizeRequest = (value: any): RawPurchaseRequest | null => {
   const listingId = value.listingId || value.listing_id || value.listing?.id || null;
   const listingTitle = value.listingTitle || value.listing_title || value.listing?.title || null;
-  const listingBrand = value.listingBrand || value.listing_brand || value.brand || value.listing?.brand || null;
-  const listingModel = value.listingModel || value.listing_model || value.model || value.listing?.model || null;
+  const listingCategory = value.listingCategory || value.listing_category || value.category || value.listing?.category || null;
+  const listingCondition = value.listingCondition || value.listing_condition || value.item_condition || value.listing?.item_condition || null;
   const listingCoverUrl =
     value.listingCoverUrl ||
     value.listing_cover_url ||
@@ -108,15 +108,15 @@ const normalizeRequest = (value: any): RawPurchaseRequest | null => {
     value.listing?.coverUrl ||
     null;
 
-  const hasListingContext = Boolean(listingId || listingTitle || listingBrand || listingModel);
+  const hasListingContext = Boolean(listingId || listingTitle || listingCategory || listingCondition);
   if (!hasListingContext) return null;
 
   return {
     id: String(value.id || ""),
     listingId,
     listingTitle,
-    listingBrand,
-    listingModel,
+    listingCategory,
+    listingCondition,
     listingCoverUrl,
     name: value.name || "",
     email: value.email || "",
@@ -134,13 +134,13 @@ const formatDate = (value: string | null) => {
   return date.toLocaleString("pt-PT");
 };
 
-const getVehicleLabel = (request: PurchaseRequest) => {
+const getListingLabel = (request: PurchaseRequest) => {
   const title = request.listingTitle;
   if (title) return title;
 
-  const brand = request.listingBrand;
-  const model = request.listingModel;
-  const combined = [brand, model].filter(Boolean).join(" ");
+  const category = request.listingCategory;
+  const condition = request.listingCondition;
+  const combined = [category, condition].filter(Boolean).join(" • ");
   if (combined) return combined;
 
   return request.listingId || "-";
@@ -178,8 +178,8 @@ const PurchaseRequestsAdmin: React.FC = () => {
             id: item.id,
             listingId: item.listingId,
             listingTitle: item.listingTitle,
-            listingBrand: item.listingBrand,
-            listingModel: item.listingModel,
+            listingCategory: item.listingCategory,
+            listingCondition: item.listingCondition,
             listingCoverUrl: item.listingCoverUrl,
             name: item.name,
             email: item.email,
@@ -192,7 +192,7 @@ const PurchaseRequestsAdmin: React.FC = () => {
         setRequests(requestItems);
         setImageErrors({});
       } catch {
-        setLoadError("Não foi possível carregar os pedidos de informação de compra.");
+        setLoadError("Nao foi possivel carregar os pedidos de interesse.");
         setRequests([]);
       } finally {
         setLoading(false);
@@ -214,8 +214,8 @@ const PurchaseRequestsAdmin: React.FC = () => {
   return (
     <div className="w-full max-w-7xl lg:max-w-[94%] xl:max-w-[92%] mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-8">
       <PageHeader
-        title="Informações de compra"
-        description="Pedidos de contacto submetidos a partir dos anúncios de veículos."
+        title="Pedidos de interesse"
+        description="Pedidos de contacto submetidos a partir dos anuncios publicados."
       />
 
       {loading ? (
@@ -223,7 +223,7 @@ const PurchaseRequestsAdmin: React.FC = () => {
       ) : loadError ? (
         <div className="glass-panel rounded-3xl p-6 text-brand-700">{loadError}</div>
       ) : requests.length === 0 ? (
-        <div className="glass-panel rounded-3xl p-6 text-brand-700">Ainda não existem pedidos de informação de compra.</div>
+        <div className="glass-panel rounded-3xl p-6 text-brand-700">Ainda nao existem pedidos de interesse.</div>
       ) : (
         <div className="grid gap-4">
           {sortedRequests.map((request) => (
@@ -233,7 +233,7 @@ const PurchaseRequestsAdmin: React.FC = () => {
                   <div className="h-14 w-20 rounded-lg border border-brand-200 bg-brand-100 shrink-0 overflow-hidden">
                     <img
                       src={resolveMediaUrl(request.listingCoverUrl)}
-                      alt={getVehicleLabel(request)}
+                      alt={getListingLabel(request)}
                       className="h-full w-full object-cover"
                       loading="lazy"
                       onError={() => {
@@ -267,8 +267,8 @@ const PurchaseRequestsAdmin: React.FC = () => {
                   </div>
 
                   <p className="mb-2 break-words">
-                    <span className="mr-1 text-xs font-medium uppercase tracking-wide text-brand-600">Veiculo:</span>
-                    <span className="text-sm text-brand-900 normal-case">{getVehicleLabel(request)}</span>
+                    <span className="mr-1 text-xs font-medium uppercase tracking-wide text-brand-600">Item:</span>
+                    <span className="text-sm text-brand-900 normal-case">{getListingLabel(request)}</span>
                   </p>
 
                   <p className="mb-2">

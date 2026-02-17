@@ -3,8 +3,8 @@
 ## 1. Overview
 
 This platform is a web product that allows users to:
-- Browse vehicles
-- View vehicle details
+- Browse listings
+- View listing details
 - Contact sellers
 - Manage listings (authenticated users)
 
@@ -18,14 +18,14 @@ The system includes:
 ## 2. User Roles
 
 ### 2.1 Guest User
-- Can browse vehicle listings
-- Can view vehicle details
+- Can browse listings
+- Can view listing details
 - Cannot create listings
 - Cannot access admin areas
 
 ### 2.2 Authenticated User
 - Can log in
-- Can create vehicle listings
+- Can create listings
 - Can edit their own listings
 - Can delete their own listings
 
@@ -39,8 +39,8 @@ The system includes:
 - After login, user is redirected to dashboard
 - Protected routes require authentication
 
-### 3.2 Vehicle Listings
-- Vehicles must have:
+### 3.2 Listings
+- Listings must have:
   - Title
   - Description
   - Price

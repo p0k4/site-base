@@ -24,14 +24,10 @@ type Story = StoryObj<typeof meta>;
 
 const baseListing: Listing = {
     id: '1',
-    title: 'BMW Série 3 320d',
-    brand: 'BMW',
-    model: 'Série 3',
-    year: 2020,
-    price: 35000,
-    fuel_type: 'Diesel',
-    transmission: 'Automática',
-    mileage: 45000,
+    title: 'Pack de templates premium',
+    category: 'Templates',
+    item_condition: 'Novo',
+    price: 490,
     location: 'Lisboa',
 };
 
@@ -55,10 +51,10 @@ export const Featured: Story = {
         listing: {
             ...baseListing,
             is_featured: true,
-            title: 'Mercedes-Benz Classe C 220d AMG',
-            brand: 'Mercedes-Benz',
-            model: 'Classe C',
-            price: 42000,
+            title: 'Kit de onboarding enterprise',
+            category: 'Recursos',
+            item_condition: 'Atualizado',
+            price: 1290,
         },
     },
 };
@@ -67,22 +63,20 @@ export const ExternalLink: Story = {
     args: {
         listing: {
             ...baseListing,
-            external_url: 'https://example.com/car',
-            source_name: 'StandVirtual',
+            external_url: 'https://example.com/resource',
+            source_name: 'Marketplace parceiro',
         },
     },
 };
 
-export const LowMileage: Story = {
+export const RemoteExample: Story = {
     args: {
         listing: {
             ...baseListing,
-            title: 'Audi A4 2.0 TDI',
-            brand: 'Audi',
-            model: 'A4',
-            year: 2022,
-            price: 38000,
-            mileage: 5000,
+            title: 'Modelo de contrato digital',
+            category: 'Documentos',
+            item_condition: 'Usado',
+            price: 290,
             location: 'Porto',
         },
     },

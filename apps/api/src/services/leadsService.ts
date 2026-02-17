@@ -15,8 +15,8 @@ export type PurchaseLeadRecord = {
   id: string;
   listing_id: string | null;
   listing_title: string | null;
-  listing_brand: string | null;
-  listing_model: string | null;
+  listing_category: string | null;
+  listing_condition: string | null;
   cover_url: string | null;
   name: string;
   email: string;
@@ -82,8 +82,8 @@ export const listPurchaseLeads = async () => {
       leads.id,
       leads.listing_id,
       listings.title AS listing_title,
-      listings.brand AS listing_brand,
-      listings.model AS listing_model,
+      listings.category AS listing_category,
+      listings.item_condition AS listing_condition,
       cover.url AS cover_url,
       leads.name,
       leads.email,

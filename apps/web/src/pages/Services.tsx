@@ -67,7 +67,7 @@ const Services: React.FC = () => {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12 space-y-10">
       <PageHeader
         title="Tudo o que precisas"
-        description="Financiamento, Tu pedes, nós resolvemos."
+        description="Escolhe um servico e envia o teu pedido."
       />
 
       <div ref={listRef} id="servicos-lista" className="grid gap-6 md:grid-cols-3">

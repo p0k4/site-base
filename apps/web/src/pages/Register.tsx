@@ -31,7 +31,7 @@ const Register: React.FC = () => {
   return (
     <div className="max-w-md mx-auto px-4 sm:px-6 py-12 sm:py-16">
       <div className="glass-panel rounded-3xl p-8 space-y-6">
-        <PageHeader title="Criar conta" description="Tudo pronto para o teu próximo carro." />
+        <PageHeader title="Criar conta" description="Tudo pronto para comecar a publicar e gerir anuncios." />
         <form className="space-y-4" onSubmit={submit}>
           <input name="name" placeholder="Nome" className="w-full rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" required />
           <input name="email" type="email" placeholder="Email" className="w-full rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" required />

@@ -4,7 +4,7 @@ import api from "../lib/api";
 import Toast from "../components/Toast";
 import ListingGallery from "../components/ListingGallery";
 
-const CarDetail: React.FC = () => {
+const ListingDetail: React.FC = () => {
   const { id } = useParams();
   const [listing, setListing] = useState<any>(null);
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -87,17 +87,15 @@ const CarDetail: React.FC = () => {
   const externalUrl = [
     listing.external_url,
     listing.externalUrl,
-    listing.standvirtual_url,
-    listing.standVirtualUrl,
     listing.source_url,
     listing.sourceUrl
   ].find((value) => typeof value === "string" && value.trim().length > 0)?.trim() || "";
 
   const hasValidExternalUrl = /^https?:\/\/\S+$/i.test(externalUrl);
 
-  const handleOpenStandvirtual = () => {
+  const handleOpenExternalSource = () => {
     if (!hasValidExternalUrl) {
-      setToast({ message: "Este anúncio não tem ligação externa para o Standvirtual.", type: "error" });
+      setToast({ message: "Este anuncio nao tem ligacao externa.", type: "error" });
       return;
     }
     window.open(externalUrl, "_blank", "noopener,noreferrer");
@@ -126,21 +124,17 @@ const CarDetail: React.FC = () => {
             <div>
               <button
                 type="button"
-                onClick={handleOpenStandvirtual}
+                onClick={handleOpenExternalSource}
                 className="brand-outline-btn rounded-full px-4 py-2 text-[11px] uppercase tracking-[0.3em]"
               >
-                Ver no Standvirtual
+                Ver fonte externa
               </button>
             </div>
             <p className="text-brand-700 leading-relaxed">{listing.description}</p>
             <div className="grid gap-3 sm:grid-cols-2 text-sm text-brand-700">
-              <div>Marca: <span className="text-brand-900">{listing.brand}</span></div>
-              <div>Modelo: <span className="text-brand-900">{listing.model}</span></div>
-              <div>Ano: <span className="text-brand-900">{listing.year}</span></div>
+              <div>Categoria: <span className="text-brand-900">{listing.category}</span></div>
+              <div>Condição: <span className="text-brand-900">{listing.item_condition}</span></div>
               <div>Preço: <span className="text-brand-900">{Number(listing.price).toLocaleString("pt-PT", { style: "currency", currency: "EUR" })}</span></div>
-              <div>Combustível: <span className="text-brand-900">{listing.fuel_type}</span></div>
-              <div>Caixa: <span className="text-brand-900">{listing.transmission}</span></div>
-              <div>Quilómetros: <span className="text-brand-900">{listing.mileage} km</span></div>
               <div>Localização: <span className="text-brand-900">{listing.location}</span></div>
             </div>
           </div>
@@ -217,7 +211,7 @@ const CarDetail: React.FC = () => {
                 disabled={isSubmitting}
                 className="brand-outline-btn w-full rounded-full px-6 py-3 text-xs uppercase tracking-[0.24em] disabled:opacity-60"
               >
-                {isSubmitting ? "A enviar..." : "Enviar pedidio"}
+                {isSubmitting ? "A enviar..." : "Enviar pedido"}
               </button>
             </form>
           </div>
@@ -227,4 +221,4 @@ const CarDetail: React.FC = () => {
   );
 };
 
-export default CarDetail;
+export default ListingDetail;

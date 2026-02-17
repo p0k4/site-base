@@ -4,13 +4,9 @@ export type ListingRecord = {
   id: string;
   user_id: string;
   title: string;
-  brand: string;
-  model: string;
-  year: number;
+  category: string;
+  item_condition: string;
   price: string;
-  fuel_type: string;
-  transmission: string;
-  mileage: number;
   location: string;
   description: string;
   source_type: string;
@@ -37,13 +33,9 @@ export type ListingImageRecord = {
 export const createListing = async (data: {
   userId: string;
   title: string;
-  brand: string;
-  model: string;
-  year: number;
+  category: string;
+  condition: string;
   price: number;
-  fuelType: string;
-  transmission: string;
-  mileage: number;
   location: string;
   description: string;
   status?: string;
@@ -55,21 +47,17 @@ export const createListing = async (data: {
   const result = await db.query<ListingRecord>(
     `
     INSERT INTO listings
-      (user_id, title, brand, model, year, price, fuel_type, transmission, mileage, location, description, status, source_type, source_name, external_url, external_ref)
+      (user_id, title, category, item_condition, price, location, description, status, source_type, source_name, external_url, external_ref)
     VALUES
-      ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
+      ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
     RETURNING *
     `,
     [
       data.userId,
       data.title,
-      data.brand,
-      data.model,
-      data.year,
+      data.category,
+      data.condition,
       data.price,
-      data.fuelType,
-      data.transmission,
-      data.mileage,
       data.location,
       data.description,
       data.status || "active",
@@ -84,13 +72,9 @@ export const createListing = async (data: {
 
 export const updateListing = async (id: string, userId: string, fields: Partial<{
   title: string;
-  brand: string;
-  model: string;
-  year: number;
+  category: string;
+  condition: string;
   price: number;
-  fuelType: string;
-  transmission: string;
-  mileage: number;
   location: string;
   description: string;
   status: string;
@@ -103,20 +87,16 @@ export const updateListing = async (id: string, userId: string, fields: Partial<
     `
     UPDATE listings
     SET title = COALESCE($3, title),
-        brand = COALESCE($4, brand),
-        model = COALESCE($5, model),
-        year = COALESCE($6, year),
-        price = COALESCE($7, price),
-        fuel_type = COALESCE($8, fuel_type),
-        transmission = COALESCE($9, transmission),
-        mileage = COALESCE($10, mileage),
-        location = COALESCE($11, location),
-        description = COALESCE($12, description),
-        status = COALESCE($13, status),
-        source_type = COALESCE($14, source_type),
-        source_name = COALESCE($15, source_name),
-        external_url = COALESCE($16, external_url),
-        external_ref = COALESCE($17, external_ref),
+        category = COALESCE($4, category),
+        item_condition = COALESCE($5, item_condition),
+        price = COALESCE($6, price),
+        location = COALESCE($7, location),
+        description = COALESCE($8, description),
+        status = COALESCE($9, status),
+        source_type = COALESCE($10, source_type),
+        source_name = COALESCE($11, source_name),
+        external_url = COALESCE($12, external_url),
+        external_ref = COALESCE($13, external_ref),
         updated_at = NOW()
     WHERE id = $1 AND user_id = $2 AND deleted_at IS NULL
     RETURNING *
@@ -125,13 +105,9 @@ export const updateListing = async (id: string, userId: string, fields: Partial<
       id,
       userId,
       fields.title ?? null,
-      fields.brand ?? null,
-      fields.model ?? null,
-      fields.year ?? null,
+      fields.category ?? null,
+      fields.condition ?? null,
       fields.price ?? null,
-      fields.fuelType ?? null,
-      fields.transmission ?? null,
-      fields.mileage ?? null,
       fields.location ?? null,
       fields.description ?? null,
       fields.status ?? null,
@@ -234,15 +210,11 @@ export const approveListing = async (id: string, approved: boolean) => {
 };
 
 export const listPublicListings = async (filters: {
-  brand?: string;
-  model?: string;
-  yearMin?: number;
-  yearMax?: number;
+  search?: string;
+  category?: string;
+  condition?: string;
   priceMin?: number;
   priceMax?: number;
-  fuelType?: string;
-  transmission?: string;
-  mileageMax?: number;
   location?: string;
   page?: number;
   limit?: number;
@@ -255,15 +227,11 @@ export const listPublicListings = async (filters: {
     conditions.push(sql.replace("$", `$${values.length}`));
   };
 
-  if (filters.brand) add("brand ILIKE $", `%${filters.brand}%`);
-  if (filters.model) add("model ILIKE $", `%${filters.model}%`);
-  if (filters.yearMin) add("year >= $", filters.yearMin);
-  if (filters.yearMax) add("year <= $", filters.yearMax);
+  if (filters.search) add("(title ILIKE $ OR description ILIKE $)", `%${filters.search}%`);
+  if (filters.category) add("category ILIKE $", `%${filters.category}%`);
+  if (filters.condition) add("item_condition ILIKE $", `%${filters.condition}%`);
   if (filters.priceMin) add("price >= $", filters.priceMin);
   if (filters.priceMax) add("price <= $", filters.priceMax);
-  if (filters.fuelType) add("fuel_type = $", filters.fuelType);
-  if (filters.transmission) add("transmission = $", filters.transmission);
-  if (filters.mileageMax) add("mileage <= $", filters.mileageMax);
   if (filters.location) add("location ILIKE $", `%${filters.location}%`);
 
   const limit = Math.min(filters.limit || 12, 50);

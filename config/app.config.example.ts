@@ -7,14 +7,14 @@ export const appConfig = {
   DOMAIN: "example.com",
   CORS_ORIGIN: "http://localhost:5174",
   TEXTS: {
-    HERO_TITLE: "O teu próximo carro servido no ponto.",
-    HERO_SUBTITLE: "Uma nova forma de comprar carro, com acompanhamento e serviços completos.",
-    TAGLINE: "O teu próximo carro servido no ponto.",
+    HERO_TITLE: "Publica e gere anuncios em minutos.",
+    HERO_SUBTITLE: "Uma base flexivel para qualquer area de negocio.",
+    TAGLINE: "Marketplace flexivel para qualquer nicho.",
     ADMIN_SECTION_TITLE: "Gestão {APP_NAME}",
     FOOTER_COPYRIGHT: "Todos os direitos reservados.",
     CONTACT_RESPONSE_TIME: "Resposta em 24h",
-    SEO_TITLE: "{APP_NAME} | Marketplace automóvel",
-    SEO_DESCRIPTION: "Compra e venda de veículos com serviços completos e apoio dedicado."
+    SEO_TITLE: "{APP_NAME} | Marketplace digital",
+    SEO_DESCRIPTION: "Plataforma para publicar anuncios, gerir contactos e oferecer servicos."
   },
   COMPANY: {
     LOCATION: "Cidade, País",

@@ -22,7 +22,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ onToggleSidebar, showSidebarTog
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const closeMobileNav = () => setMobileNavOpen(false);
   const navItems = [
-    { to: "/carros", label: "Carros" },
+    { to: "/anuncios", label: "Anuncios" },
     { to: "/servicos", label: "Serviços" },
     { to: "/contactos", label: "Quem Somos" }
   ];

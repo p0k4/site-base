@@ -2,8 +2,8 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppShell from "./components/AppShell";
 import Home from "./pages/Home";
-import Cars from "./pages/Cars";
-import CarDetail from "./pages/CarDetail";
+import Listings from "./pages/Listings";
+import ListingDetail from "./pages/ListingDetail";
 import Services from "./pages/Services";
 import Contactos from "./pages/Contactos";
 import Login from "./pages/Login";
@@ -28,8 +28,8 @@ const App: React.FC = () => {
       <AppShell>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/carros" element={<Cars />} />
-          <Route path="/carros/:id" element={<CarDetail />} />
+          <Route path="/anuncios" element={<Listings />} />
+          <Route path="/anuncios/:id" element={<ListingDetail />} />
           <Route path="/servicos" element={<Services />} />
           <Route path="/contactos" element={<Contactos />} />
           <Route path="/login" element={<Login />} />

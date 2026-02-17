@@ -6,15 +6,15 @@ test.describe('Listings', () => {
     });
 
     test('should display listings page', async ({ page }) => {
-        // Navigate to listings/cars page
-        await page.goto('/carros');
+        // Navigate to listings page
+        await page.goto('/anuncios');
 
         // Check that we're on the listings page
-        await expect(page).toHaveURL(/.*carros/);
+        await expect(page).toHaveURL(/.*anuncios/);
     });
 
     test('should show listing cards', async ({ page }) => {
-        await page.goto('/carros');
+        await page.goto('/anuncios');
 
         // Wait for listings to load
         await page.waitForTimeout(1000);
@@ -27,25 +27,25 @@ test.describe('Listings', () => {
     });
 
     test('should navigate to listing detail', async ({ page }) => {
-        await page.goto('/carros');
+        await page.goto('/anuncios');
 
         // Wait for listings to load
         await page.waitForTimeout(1000);
 
         // Click on first listing if available
-        const firstListing = page.locator('a[href*="/carros/"]').first();
+        const firstListing = page.locator('a[href*="/anuncios/"]').first();
         const count = await firstListing.count();
 
         if (count > 0) {
             await firstListing.click();
 
             // Should navigate to detail page
-            await expect(page).toHaveURL(/.*carros\/.+/);
+            await expect(page).toHaveURL(/.*anuncios\/.+/);
         }
     });
 
     test('should filter listings', async ({ page }) => {
-        await page.goto('/carros');
+        await page.goto('/anuncios');
 
         // Look for filter inputs
         const filterInputs = page.locator('input[type="text"], select, input[type="number"]');

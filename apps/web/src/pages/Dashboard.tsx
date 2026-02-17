@@ -9,13 +9,9 @@ import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 
 const initialForm = {
   title: "",
-  brand: "",
-  model: "",
-  year: "",
+  category: "",
+  condition: "",
   price: "",
-  fuelType: "",
-  transmission: "",
-  mileage: "",
   location: "",
   description: "",
   status: "active"
@@ -182,13 +178,9 @@ const Dashboard: React.FC<DashboardProps> = ({
   const startEdit = (listing: any) => {
     setForm({
       title: listing.title,
-      brand: listing.brand,
-      model: listing.model,
-      year: String(listing.year),
+      category: listing.category,
+      condition: listing.item_condition,
       price: String(listing.price),
-      fuelType: listing.fuel_type,
-      transmission: listing.transmission,
-      mileage: String(listing.mileage),
       location: listing.location,
       description: listing.description,
       status: listing.status
@@ -240,14 +232,14 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   const validateExternalLink = async () => {
     if (!externalUrl.trim()) {
-      toast.error("Indica o link do Standvirtual.");
+      toast.error("Indica um link externo.");
       return;
     }
     setImportLoading(true);
     try {
       const { data } = await api.post("/listings/import-link", { external_url: externalUrl });
       setExternalUrl(data.normalized_url);
-      setExternalSourceName(data.source_name || "Standvirtual");
+      setExternalSourceName(data.source_name || "Origem externa");
       setExternalValidated(true);
       toast.success("Link validado com sucesso.");
     } catch (error: any) {
@@ -275,26 +267,22 @@ const Dashboard: React.FC<DashboardProps> = ({
         return;
       }
       if (!editingId && importFromExternal && !externalValidated) {
-        toast.error("Valida o link do Standvirtual antes de continuar.");
+        toast.error("Valida o link externo antes de continuar.");
         return;
       }
 
       const payload: any = {
         title: form.title,
-        brand: form.brand,
-        model: form.model,
-        year: Number(form.year),
+        category: form.category,
+        condition: form.condition,
         price: Number(form.price),
-        fuelType: form.fuelType,
-        transmission: form.transmission,
-        mileage: Number(form.mileage),
         location: form.location,
         description: form.description,
         status: form.status
       };
       if (!editingId && importFromExternal) {
         payload.source_type = "external";
-        payload.source_name = externalSourceName || "Standvirtual";
+        payload.source_name = externalSourceName || "Origem externa";
         payload.external_url = externalUrl;
       }
 
@@ -458,13 +446,13 @@ const Dashboard: React.FC<DashboardProps> = ({
                 <div className="rounded-2xl border border-brand-200 bg-brand-50 p-3 space-y-2">
                   <label className="flex items-center gap-3 text-sm text-brand-700">
                     <input type="checkbox" checked={importFromExternal} onChange={toggleImport} />
-                    Quero importar a partir de link (Standvirtual)
+                    Quero importar a partir de link externo
                   </label>
                   {importFromExternal && (
                     <div className="space-y-1">
                       <input
                         className="w-full rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm"
-                        placeholder="Link do Standvirtual"
+                        placeholder="Link externo"
                         value={externalUrl}
                         onChange={(e) => {
                           setExternalUrl(e.target.value);
@@ -482,7 +470,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         </button>
                         {externalValidated && (
                           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-700">
-                            Fonte: {externalSourceName || "Standvirtual"}
+                            Fonte: {externalSourceName || "Origem externa"}
                           </span>
                         )}
                       </div>
@@ -494,14 +482,13 @@ const Dashboard: React.FC<DashboardProps> = ({
                 </div>
               ) : externalUrl ? (
                 <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-xs text-brand-700">
-                  Fonte externa: {externalSourceName || "Standvirtual"} (link associado ao anúncio)
+                  Fonte externa: {externalSourceName || "Origem externa"} (link associado ao anuncio)
                 </div>
               ) : null}
               <input className="w-full rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Título" value={form.title} onChange={(e) => updateField("title", e.target.value)} />
               <div className="grid gap-3 md:grid-cols-2">
-                <input className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Marca" value={form.brand} onChange={(e) => updateField("brand", e.target.value)} />
-                <input className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Modelo" value={form.model} onChange={(e) => updateField("model", e.target.value)} />
-                <input type="number" className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Ano" value={form.year} onChange={(e) => updateField("year", e.target.value)} />
+                <input className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Categoria" value={form.category} onChange={(e) => updateField("category", e.target.value)} />
+                <input className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Condição" value={form.condition} onChange={(e) => updateField("condition", e.target.value)} />
                 <input type="number" className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Preço" value={form.price} onChange={(e) => updateField("price", e.target.value)} />
               </div>
             </div>
@@ -510,15 +497,12 @@ const Dashboard: React.FC<DashboardProps> = ({
           {step === 2 && (
             <div className="space-y-2">
               <div className="grid gap-2 md:grid-cols-2">
-                <input className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Combustível" value={form.fuelType} onChange={(e) => updateField("fuelType", e.target.value)} />
-                <input className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Caixa" value={form.transmission} onChange={(e) => updateField("transmission", e.target.value)} />
-                <input type="number" className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Quilómetros" value={form.mileage} onChange={(e) => updateField("mileage", e.target.value)} />
                 <input className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" placeholder="Localização" value={form.location} onChange={(e) => updateField("location", e.target.value)} />
               </div>
               <select className="rounded-2xl bg-white border border-brand-200 px-3 py-2 text-sm" value={form.status} onChange={(e) => updateField("status", e.target.value)}>
                 <option value="active">Ativo</option>
                 <option value="paused">Pausado</option>
-                <option value="sold">Vendido</option>
+                <option value="closed">Fechado</option>
               </select>
             </div>
           )}
@@ -679,7 +663,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 const lifecycleMap: Record<string, string> = {
                   active: "ATIVO",
                   paused: "PAUSADO",
-                  sold: "VENDIDO",
+                  closed: "FECHADO",
                   suspended: "SUSPENSO"
                 };
                 const lifecycleStatus = lifecycleMap[String(listing.status || "active")] || "ATIVO";
@@ -716,7 +700,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                             <div className="min-w-0">
                               <h3 className="truncate text-brand-900 font-medium">{listing.title}</h3>
-                              <p className="mt-1 text-sm text-brand-700 truncate">{listing.brand} {listing.model} • {listing.year}</p>
+                              <p className="mt-1 text-sm text-brand-700 truncate">{listing.category} • {listing.item_condition}</p>
                             </div>
                             <div className="flex flex-wrap items-center gap-2 sm:justify-end">
                               {isFeatured && (
@@ -741,7 +725,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                 >
                                   <option value="active">Ativo</option>
                                   <option value="paused">Pausado</option>
-                                  <option value="sold">Vendido</option>
+                                  <option value="closed">Fechado</option>
                                 </select>
                               ) : (
                                 <span className={`font-semibold ${lifecycleClass}`}>{lifecycleStatus}</span>
@@ -835,7 +819,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                       <div className="min-w-0">
                         <h3 className="font-display text-xl text-brand-900 truncate">{listing.title}</h3>
-                        <p className="text-sm text-brand-700">{listing.brand} {listing.model} • {listing.year}</p>
+                        <p className="text-sm text-brand-700">{listing.category} • {listing.item_condition}</p>
                         <p className={`mt-1 text-xs uppercase tracking-[0.3em] ${lifecycleClass}`}>Estado: {lifecycleStatus}</p>
                       </div>
                       <div className="flex flex-wrap items-center gap-2 sm:justify-end">
@@ -860,7 +844,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                           >
                             <option value="active">Ativo</option>
                             <option value="paused">Pausado</option>
-                            <option value="sold">Vendido</option>
+                            <option value="closed">Fechado</option>
                           </select>
                         ) : (
                           <span className={`font-semibold ${lifecycleClass}`}>{lifecycleStatus}</span>

@@ -17,13 +17,9 @@ CREATE TABLE IF NOT EXISTS listings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
-  brand TEXT NOT NULL,
-  model TEXT NOT NULL,
-  year INT NOT NULL,
+  category TEXT NOT NULL,
+  item_condition TEXT NOT NULL,
   price NUMERIC(12,2) NOT NULL,
-  fuel_type TEXT NOT NULL,
-  transmission TEXT NOT NULL,
-  mileage INT NOT NULL,
   location TEXT NOT NULL,
   description TEXT NOT NULL,
   source_type TEXT NOT NULL DEFAULT 'internal',
@@ -106,9 +102,8 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 CREATE INDEX IF NOT EXISTS idx_listings_approved ON listings(is_approved);
 CREATE INDEX IF NOT EXISTS idx_listings_status ON listings(status);
 CREATE INDEX IF NOT EXISTS idx_listings_featured ON listings(is_featured) WHERE is_featured = true;
-CREATE INDEX IF NOT EXISTS idx_listings_brand ON listings(brand);
-CREATE INDEX IF NOT EXISTS idx_listings_model ON listings(model);
-CREATE INDEX IF NOT EXISTS idx_listings_year ON listings(year);
+CREATE INDEX IF NOT EXISTS idx_listings_category ON listings(category);
+CREATE INDEX IF NOT EXISTS idx_listings_condition ON listings(item_condition);
 CREATE INDEX IF NOT EXISTS idx_listings_price ON listings(price);
 CREATE INDEX IF NOT EXISTS idx_listings_location ON listings(location);
 CREATE INDEX IF NOT EXISTS idx_listings_external_url ON listings(external_url);
@@ -117,7 +112,7 @@ CREATE INDEX IF NOT EXISTS idx_services_active ON services(is_active);
 CREATE INDEX IF NOT EXISTS idx_leads_listing ON leads_contacts(listing_id);
 
 INSERT INTO services (name, description, price) VALUES
-  ('Financiamento', 'Simulacao e acompanhamento com parceiros locais.', NULL),
-  ('Seguro', 'Proposta rapida e transparente para o teu perfil.', NULL),
-  ('Inspecao', 'Check-up completo antes da compra.', NULL)
+  ('Consultoria', 'Apoio especializado para decisoes e planeamento.', NULL),
+  ('Implementacao', 'Execucao pratica para colocar a solucao em producao.', NULL),
+  ('Suporte', 'Acompanhamento continuo e resolucao de duvidas.', NULL)
 ON CONFLICT DO NOTHING;

@@ -1,18 +1,14 @@
 import { z } from "zod";
-import { isStandvirtualUrl } from "../utils/externalSources";
+import { isExternalUrl } from "../utils/externalSources";
 
 const listingBaseObject = z.object({
   title: z.string().min(3, "Titulo curto demais."),
-  brand: z.string().min(1, "Marca obrigatoria."),
-  model: z.string().min(1, "Modelo obrigatorio."),
-  year: z.number().int().min(1950).max(new Date().getFullYear() + 1),
+  category: z.string().min(1, "Categoria obrigatoria."),
+  condition: z.string().min(1, "Condicao obrigatoria."),
   price: z.number().min(0),
-  fuelType: z.string().min(1, "Combustivel obrigatorio."),
-  transmission: z.string().min(1, "Caixa obrigatoria."),
-  mileage: z.number().int().min(0),
   location: z.string().min(2, "Localizacao obrigatoria."),
   description: z.string().min(10, "Descricao curta demais."),
-  status: z.enum(["active", "paused", "sold"]).optional(),
+  status: z.enum(["active", "paused", "closed"]).optional(),
   source_type: z.enum(["internal", "external"]).optional(),
   source_name: z.string().max(80).optional(),
   external_url: z.string().optional(),
@@ -27,17 +23,17 @@ const applyListingRefinements = <T extends z.ZodTypeAny>(schema: T) =>
   schema.superRefine((data: any, ctx) => {
     const externalUrlSnake = data.external_url;
     const externalUrlCamel = data.externalUrl;
-    if (externalUrlSnake && !isStandvirtualUrl(externalUrlSnake)) {
+    if (externalUrlSnake && !isExternalUrl(externalUrlSnake)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Link do Standvirtual invalido.",
+        message: "Link externo invalido.",
         path: ["external_url"]
       });
     }
-    if (externalUrlCamel && !isStandvirtualUrl(externalUrlCamel)) {
+    if (externalUrlCamel && !isExternalUrl(externalUrlCamel)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Link do Standvirtual invalido.",
+        message: "Link externo invalido.",
         path: ["externalUrl"]
       });
     }
@@ -48,7 +44,7 @@ const applyListingRefinements = <T extends z.ZodTypeAny>(schema: T) =>
     if (sourceType === "external" && !externalUrl) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Link do Standvirtual obrigatorio para anuncios externos.",
+        message: "Link externo obrigatorio para anuncios externos.",
         path: ["external_url"]
       });
     }
@@ -67,7 +63,7 @@ export const listingUpdateSchema = z.object({
 
 export const listingStatusSchema = z.object({
   body: z.object({
-    status: z.enum(["active", "paused", "sold"])
+    status: z.enum(["active", "paused", "closed"])
   })
 });
 
@@ -83,15 +79,11 @@ export const listingFeaturedSchema = z.object({
 
 export const listingFilterSchema = z.object({
   query: z.object({
-    brand: z.string().optional(),
-    model: z.string().optional(),
-    yearMin: z.string().optional(),
-    yearMax: z.string().optional(),
+    search: z.string().optional(),
+    category: z.string().optional(),
+    condition: z.string().optional(),
     priceMin: z.string().optional(),
     priceMax: z.string().optional(),
-    fuelType: z.string().optional(),
-    transmission: z.string().optional(),
-    mileageMax: z.string().optional(),
     location: z.string().optional(),
     page: z.string().optional(),
     limit: z.string().optional()
@@ -110,24 +102,24 @@ export const listingImportSchema = z.object({
     if (!externalUrl) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Link do Standvirtual obrigatorio.",
+        message: "Link externo obrigatorio.",
         path: ["external_url"]
       });
       return;
     }
 
-    if (externalUrlSnake && !isStandvirtualUrl(externalUrlSnake)) {
+    if (externalUrlSnake && !isExternalUrl(externalUrlSnake)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Link do Standvirtual invalido.",
+        message: "Link externo invalido.",
         path: ["external_url"]
       });
     }
 
-    if (externalUrlCamel && !isStandvirtualUrl(externalUrlCamel)) {
+    if (externalUrlCamel && !isExternalUrl(externalUrlCamel)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Link do Standvirtual invalido.",
+        message: "Link externo invalido.",
         path: ["externalUrl"]
       });
     }

@@ -73,8 +73,8 @@ Short descriptions of all project files (excluding `node_modules` and `uploads`)
 | apps/web/src/lib/api.ts | Axios client setup. |
 | apps/web/src/lib/media.ts | Media URL resolution helpers. |
 | apps/web/src/pages/Admin.tsx | Admin dashboard page. |
-| apps/web/src/pages/CarDetail.tsx | Listing detail page. |
-| apps/web/src/pages/Cars.tsx | Listings search/browse page. |
+| apps/web/src/pages/ListingDetail.tsx | Listing detail page. |
+| apps/web/src/pages/Listings.tsx | Listings search/browse page. |
 | apps/web/src/pages/Dashboard.tsx | User dashboard and listing editor. |
 | apps/web/src/pages/Home.tsx | Home page with highlights. |
 | apps/web/src/pages/Login.tsx | Login page. |

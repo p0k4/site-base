@@ -21,7 +21,7 @@ import {
   updateListing,
   updateListingImageOrder
 } from "../services/listingsService";
-import { getStandvirtualSourceName, normalizeStandvirtualUrl } from "../utils/externalSources";
+import { getDefaultExternalSourceName, normalizeExternalUrl } from "../utils/externalSources";
 import { env } from "../config/env";
 
 const uploadRoot = path.isAbsolute(env.uploadDir) ? env.uploadDir : path.resolve(process.cwd(), env.uploadDir);
@@ -72,18 +72,14 @@ const resolveUploadPath = (url: string) => {
 };
 
 export const listPublic = async (req: Request, res: Response) => {
-  const { brand, model, yearMin, yearMax, priceMin, priceMax, fuelType, transmission, mileageMax, location, page, limit } = req.query;
+  const { search, category, condition, priceMin, priceMax, location, page, limit } = req.query;
 
   const listings = await listPublicListings({
-    brand: brand as string | undefined,
-    model: model as string | undefined,
-    yearMin: yearMin ? Number(yearMin) : undefined,
-    yearMax: yearMax ? Number(yearMax) : undefined,
+    search: search as string | undefined,
+    category: category as string | undefined,
+    condition: condition as string | undefined,
     priceMin: priceMin ? Number(priceMin) : undefined,
     priceMax: priceMax ? Number(priceMax) : undefined,
-    fuelType: fuelType as string | undefined,
-    transmission: transmission as string | undefined,
-    mileageMax: mileageMax ? Number(mileageMax) : undefined,
     location: location as string | undefined,
     page: page ? Number(page) : undefined,
     limit: limit ? Number(limit) : undefined
@@ -122,32 +118,28 @@ export const create = async (req: AuthedRequest, res: Response) => {
   const sourceType = (req.body.source_type ?? req.body.sourceType ?? (rawExternalUrl ? "external" : "internal")) as
     | "internal"
     | "external";
-  const sourceName = req.body.source_name ?? req.body.sourceName ?? (sourceType === "external" ? getStandvirtualSourceName() : null);
+  const sourceName = req.body.source_name ?? req.body.sourceName ?? (sourceType === "external" ? getDefaultExternalSourceName() : null);
   const externalRef = req.body.external_ref ?? req.body.externalRef ?? null;
   let externalUrl: string | null = null;
 
   if (rawExternalUrl) {
     try {
-      externalUrl = normalizeStandvirtualUrl(String(rawExternalUrl));
+      externalUrl = normalizeExternalUrl(String(rawExternalUrl));
     } catch (error: any) {
-      return res.status(400).json({ message: error?.message || "Link do Standvirtual invalido." });
+      return res.status(400).json({ message: error?.message || "Link externo invalido." });
     }
   }
 
   if (sourceType === "external" && !externalUrl) {
-    return res.status(400).json({ message: "Link do Standvirtual obrigatorio para anuncios externos." });
+    return res.status(400).json({ message: "Link externo obrigatorio para anuncios externos." });
   }
 
   const listing = await createListing({
     userId: req.user.id,
     title: req.body.title,
-    brand: req.body.brand,
-    model: req.body.model,
-    year: req.body.year,
+    category: req.body.category,
+    condition: req.body.condition,
     price: req.body.price,
-    fuelType: req.body.fuelType,
-    transmission: req.body.transmission,
-    mileage: req.body.mileage,
     location: req.body.location,
     description: req.body.description,
     status: req.body.status,
@@ -188,9 +180,9 @@ export const update = async (req: AuthedRequest, res: Response) => {
 
   if (payload.externalUrl) {
     try {
-      payload.externalUrl = normalizeStandvirtualUrl(String(payload.externalUrl));
+      payload.externalUrl = normalizeExternalUrl(String(payload.externalUrl));
     } catch (error: any) {
-      return res.status(400).json({ message: error?.message || "Link do Standvirtual invalido." });
+      return res.status(400).json({ message: error?.message || "Link externo invalido." });
     }
   }
 
@@ -208,18 +200,18 @@ export const importLink = async (req: AuthedRequest, res: Response) => {
 
   const rawExternalUrl = req.body.external_url ?? req.body.externalUrl;
   if (!rawExternalUrl) {
-    return res.status(400).json({ message: "Link do Standvirtual obrigatorio." });
+    return res.status(400).json({ message: "Link externo obrigatorio." });
   }
 
   try {
-    const normalizedUrl = normalizeStandvirtualUrl(String(rawExternalUrl));
+    const normalizedUrl = normalizeExternalUrl(String(rawExternalUrl));
     return res.json({
       normalized_url: normalizedUrl,
       source_type: "external",
-      source_name: getStandvirtualSourceName()
+      source_name: getDefaultExternalSourceName()
     });
   } catch (error: any) {
-    return res.status(400).json({ message: error?.message || "Link do Standvirtual invalido." });
+    return res.status(400).json({ message: error?.message || "Link externo invalido." });
   }
 };
 
