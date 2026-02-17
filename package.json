@@ -1,0 +1,44 @@
+{
+  "name": "site-base",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Boilerplate multi-cliente: React + Vite + Node.js + Express + PostgreSQL",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "setup": "bash setup.sh",
+    "dev": "cd infra && docker compose up --build",
+    "dev:api": "cd apps/api && npm run dev",
+    "dev:web": "cd apps/web && npm run dev",
+    "build:api": "cd apps/api && npm run build",
+    "build:web": "cd apps/web && npm run build",
+    "lint:api": "cd apps/api && npm run lint || echo 'No lint script configured'",
+    "lint:web": "cd apps/web && npm run lint || echo 'No lint script configured'",
+    "type-check:api": "cd apps/api && npx tsc --noEmit",
+    "type-check:web": "cd apps/web && npx tsc --noEmit",
+    "test:api": "cd apps/api && npm test",
+    "install:all": "npm install && npm install --workspace=apps/api && npm install --workspace=apps/web"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/site-base"
+  },
+  "keywords": [
+    "boilerplate",
+    "react",
+    "vite",
+    "express",
+    "postgresql",
+    "typescript",
+    "jwt",
+    "multi-tenant"
+  ],
+  "author": "",
+  "license": "MIT"
+}

@@ -13,6 +13,7 @@ import adminRoutes from "./routes/admin";
 import settingsRoutes from "./routes/settings";
 import companyRoutes from "./routes/company";
 import { env } from "./config/env";
+import { db } from "./config/db";
 import { ensureDir } from "./utils/files";
 import { errorHandler, notFound } from "./middleware/error";
 
@@ -35,7 +36,26 @@ app.use("/uploads", (_req, res, next) => {
 });
 app.use("/uploads", express.static(uploadPath));
 
-app.get("/health", (_req, res) => res.json({ status: "ok" }));
+app.get("/health", async (_req, res) => {
+  const health = {
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || "development",
+    database: "unknown"
+  };
+
+  try {
+    // Check database connectivity
+    const result = await db.query("SELECT NOW() as time");
+    health.database = result.rows[0] ? "connected" : "disconnected";
+    res.status(200).json(health);
+  } catch (error) {
+    health.status = "degraded";
+    health.database = "disconnected";
+    res.status(503).json(health);
+  }
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
